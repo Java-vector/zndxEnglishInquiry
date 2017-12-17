@@ -9,10 +9,7 @@
 	$select = $input ->post('select');
 	//实例化NRCR类
 	$csu = new NRCR($student_id,$student_name,$select);
-	// $csu = new NRCR('0501150134','周志伟','1');
-	// echo "学号".$student_id."姓名".$student_name."select".$select;
-	$data = $csu ->FinallyInquiry();
-	//调用InquiryEng方法并返回数组
+	$data = $csu ->FinallyInquiry();	//调用InquiryEng方法并返回数组
 	//数组json格式化
 	$string_json  = json_encode($data);
 	echo $string_json;

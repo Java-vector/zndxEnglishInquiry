@@ -1,12 +1,13 @@
  <?php
+		//引入simple_html_dom类库
 		require_once('./lib/simple_html_dom/simple_html_dom.php');
 	/**
-	* 查询英语四六级及计算机等级考试类库
+	* 查询英语四六级类库
 	*/
 	class NRCR  
 	{
-		public $student_id;
-		public $student_name;
+		public $student_id;//用户的学号
+		public $student_name;//用户姓名
 		public $select;
 		// 初始化构造函数
 		public function __construct($STUDENT_ID,$STUDENT_NAME,$SELECT)
@@ -14,42 +15,18 @@
 			$this->student_id = $STUDENT_ID;
 			$this->student_name = $STUDENT_NAME;
 			$this->select = $SELECT;
-			// echo $this->student_id."    ".$this->student_name."   ".$this->select;
 		}
-		/**
-		 * 从中国考试网上查询计算机等级考试成绩
-		 * $IdCard--查询所需身份证号码
-		 * $Name-- 查询所需姓名
-		 * 
-		 */
-		function InquiryComputer($IdCard,$Name){
-
-		}
-		//总的查询方法
-		public function FinallyInquiry(){
-			//判断$select确定调用方法
-			if(!$this->select){
-				//查询上半年四六级成绩
-				$result = $this->InquiryEng($this->student_id,$this->student_name,$this->select);
-			}else{
-				//查询所有的四六级成绩
-				$result = $this->InquiryId($this->student_id,$this->student_name,$this->select);
-			}
-			return $result;
-		}
+	
 		/**
 		 * 从学信网查询最近一次四六级英语考试成绩www.chsi.com.cn/cet/
 		 * 查询英语四六级成绩
 		 * @param , $zkzh 准考证号
 		 * @param , $xm 姓名
-		 * @param  $select 是否查询所有成绩
 		 * return返回获得的数据
 		 */
-		public function InquiryEng($student_id,$student_name,$select){
-				//调用InquiryId方法获取对应准考证号
-			    $zkzh = $this->InquiryId($student_id,$student_name,$select);
+		public function InquiryEng($zkzh,$xm){
 				//拼接url
-				$url = 'http://www.chsi.com.cn/cet/query?'.'zkzh='.$zkzh.'&&xm='.$student_name;
+				$url = 'http://www.chsi.com.cn/cet/query?'.'zkzh='.$zkzh.'&&xm='.$xm;
 				//初始化curl类库
 				$ch = curl_init();
 				//设置选项，包括URL
@@ -84,8 +61,6 @@
                 	}
                 	$i++;
                 }
-                //区分两种不同的查询结果
-                $data[0]['select'] = '0';
                 return $data;
 		}
 		/**
@@ -138,6 +113,4 @@
 			return $result_final;
 		}
 	}
-
-
 ?>
